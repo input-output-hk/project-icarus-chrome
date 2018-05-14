@@ -326,7 +326,7 @@ function spenderData(tx, address) {
 
 async function getBalance(addresses) {
   const utxoSum = await getUTXOsSumsForAddresses(addresses);
-  return new BigNumber(utxoSum.sum);
+  return utxoSum.sum ? new BigNumber(utxoSum.sum) : new BigNumber(0);
 }
 
 function mapUTXOsToInputs(utxos, adaAddressesMap) {
