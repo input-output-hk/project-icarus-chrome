@@ -32,6 +32,7 @@ import {
 import {
   getTransactionsHistoryForAddresses,
   getUTXOsForAddresses,
+  getUTXOsSumsForAddresses,
   sendTx
 } from './lib/icarus-backend-api';
 
@@ -116,7 +117,7 @@ export const updateAdaWallets = async (): Promise<AdaWallets> => {
   });
   saveInStorage(WALLET_KEY, updatedWallet);
   // Update Wallet Txs History
-  const history = await getTransactionsHistoryForAddresses(addresses);
+  const history = []; // await getTransactionsHistoryForAddresses(addresses);
   if (history.length > 0) {
     saveInStorage(
       TX_KEY,
@@ -323,8 +324,8 @@ function spenderData(tx, address) {
 }
 
 async function getBalance(addresses) {
-  const utxos = await getUTXOsForAddresses(addresses);
-  return utxos.reduce((acc, utxo) => acc.plus(new BigNumber(utxo.amount)), new BigNumber(0));
+  const utxoSum = await getUTXOsSumsForAddresses(addresses);
+  return new BigNumber(utxoSum.sum);
 }
 
 function mapUTXOsToInputs(utxos, adaAddressesMap) {
