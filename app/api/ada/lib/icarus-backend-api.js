@@ -40,6 +40,16 @@ export const getTransactionsHistoryForAddresses = (addresses, dateFrom) =>
     }
   ).then(response => response.data);
 
+export const getPendingTransactionsForAddresses = (addresses) =>
+  axios(`https://${BackendApiRoute}:${BackendApiPort}/api/txs/pending`,
+    {
+      method: 'post',
+      data: {
+        addresses
+      }
+    }
+  ).then(response => response.data);
+
 export const sendTx = signedTx =>
   axios(`https://${BackendApiRoute}:${BackendApiPort}/api/txs/signed`,
     {

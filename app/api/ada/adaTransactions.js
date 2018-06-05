@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js';
 import { Wallet } from 'cardano-crypto';
 import {
   getTransactionsHistoryForAddresses,
+  getPendingTransactionsForAddresses,
   getUTXOsForAddresses,
   getUTXOsSumsForAddresses,
   transactionsLimit,
@@ -46,6 +47,14 @@ const TX_KEY = 'TXS'; // single txs list atm
 
 export function getAdaTransactions() {
   return getFromStorage(TX_KEY) || [];
+}
+
+function getAdaPendingTransactions(): Promise<AdaTransactions> {
+  const addressesMap = getAdaAddressesMap();
+  const addresses = mapToList(addressesMap).map(addr => addr.cadId);
+  return getPendingTransactionsForAddresses(addresses).then((response) =>
+    _mapTransactions(response, addresses)
+  );
 }
 
 export const getAdaTxsHistoryByWallet = (): Promise<AdaTransactions> => {
@@ -220,7 +229,7 @@ function _mapTransactions(
     const outputs = _mapInputOutput(tx.outputs_address, tx.outputs_amount);
     const { isOutgoing, amount } = _spenderData(inputs, outputs, accountAddresses);
     const isPending = tx.block_num === null;
-    if (!getLastBlockNumber() || tx.best_block_num > getLastBlockNumber()) {
+    if (!isPending && (!getLastBlockNumber() || tx.best_block_num > getLastBlockNumber())) {
       saveLastBlockNumber(tx.best_block_num);
     }
     return {
