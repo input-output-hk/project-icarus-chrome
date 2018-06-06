@@ -1,6 +1,6 @@
 import lf from 'lovefield';
 
-// CHECK
+const txsTableName = 'Txs';
 const txsTableFields = {
   CT_AMOUNT: 'ctAmount',
   CT_BLOCK_NUMBER: 'ctBlockNumber',
@@ -19,6 +19,7 @@ const orders = {
 
 const LovefieldDB = {
   db: null,
+  txsTableName,
   txsTableFields,
   orders
 };
@@ -48,4 +49,48 @@ export const loadLovefieldDB = async() => {
     LovefieldDB.db = db;
     return db;
   });
+};
+
+export const insertOrReplaceToDB = function (rows) {
+  LovefieldDB.db.insertOrReplace()
+  .into(_getTxsTable())
+  .values(rows)
+  .exec()
+  .catch(err => err);
+};
+
+export const getTxWithDBSchema = function (amount, tx, inputs, isOutgoing, outputs) {
+  const isPending = tx.block_num === null;
+  return {
+    [LovefieldDB.txsTableFields.CT_AMOUNT]: {
+      getCCoin: amount
+    },
+    [LovefieldDB.txsTableFields.CT_BLOCK_NUMBER]: tx.block_num,
+    [LovefieldDB.txsTableFields.CT_ID]: tx.hash,
+    [LovefieldDB.txsTableFields.CT_INPUTS]: { newInputs: inputs },
+    [LovefieldDB.txsTableFields.CT_IS_OUTGOING]: isOutgoing,
+    [LovefieldDB.txsTableFields.CT_META]: {
+      ctmDate: tx.time,
+      ctmDescription: undefined,
+      ctmTitle: undefined
+    },
+    [LovefieldDB.txsTableFields.CTM_DATE]: new Date(tx.time),
+    [LovefieldDB.txsTableFields.CT_OUTPUTS]: { newOutputs: outputs },
+    [LovefieldDB.txsTableFields.CT_CONDITION]: isPending ? 'CPtxApplying' : 'CPtxInBlocks'
+  };
+};
+
+export const getDBRow = function (newtx) {
+  return _getTxsTable().createRow(newtx);
+};
+
+export const getMostRecentTxFromRows = function (previousTxsRows) {
+  const previousTxsRowsLth = previousTxsRows.length;
+  return previousTxsRows[previousTxsRowsLth - 1] ?
+    previousTxsRows[previousTxsRowsLth - 1].m :
+    previousTxsRows[previousTxsRowsLth - 1];
+};
+
+const _getTxsTable = function () {
+  return LovefieldDB.db.getSchema().table(LovefieldDB.txsTable);
 };
