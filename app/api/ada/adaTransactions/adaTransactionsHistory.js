@@ -12,15 +12,23 @@ import {
   getDBRow,
   getTxWithDBSchema,
   getMostRecentTxFromRows,
-  getAllTxsFromTxsTable
+  getAllTxsFromTxsTable,
+  convertFromDBToAdaTransaction
 } from '../lib/lovefieldDatabase';
 import {
   getLastBlockNumber,
   saveLastBlockNumber
 } from '../getAdaLastBlockNumber';
+import type {
+  AdaTransaction,
+  AdaTransactions,
+  AdaTransactionInputOutput
+} from '../adaTypes';
 
 export async function getAdaTransactions() {
-  return await getAllTxsFromTxsTable();
+  const adaTransactionsFromDB = await getAllTxsFromTxsTable();
+  return adaTransactionsFromDB.map(dbTx =>
+    convertFromDBToAdaTransaction(dbTx));
 }
 
 export const getAdaTxsHistoryByWallet = async (): Promise<AdaTransactions> => {

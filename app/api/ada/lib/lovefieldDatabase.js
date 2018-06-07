@@ -97,6 +97,15 @@ export const getAllTxsFromTxsTable = async function () {
     .then(rows => rows);
 };
 
+export const convertFromDBToAdaTransaction = function (txDB) {
+  const newTx = Object.assign({}, txDB);
+  newTx.ctInputs = txDB.ctInputs.newInputs.map(address => (address[0] ? address : [address]));
+  newTx.ctOutputs = txDB.ctOutputs.newOutputs.map(address => (address[0] ? address : [address]));
+  newTx.ctAmount = Object.assign({}, newTx.ctAmount);
+  newTx.ctAmount.getCCoin = txDB.ctAmount.getCCoin.c[0];
+  return newTx;
+};
+
 const _getTxsTable = function () {
   return LovefieldDB.db.getSchema().table(LovefieldDB.txsTableName);
 };
