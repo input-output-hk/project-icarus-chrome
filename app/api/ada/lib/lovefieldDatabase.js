@@ -32,7 +32,7 @@ export const loadLovefieldDB = async() => {
     return Promise.resolve(LovefieldDB.db);
   }
   const schemaBuilder = lf.schema.create('icarus-schema', 1);
-  schemaBuilder.createTable('Txs')
+  schemaBuilder.createTable(LovefieldDB.txsTableName)
     .addColumn('id', lf.Type.INTEGER)
     .addColumn(txsTableFields.CT_AMOUNT, lf.Type.OBJECT)
     .addColumn(txsTableFields.CT_BLOCK_NUMBER, lf.Type.STRING)
@@ -94,11 +94,11 @@ export const getMostRecentTxFromRows = function (previousTxsRows) {
 export const getAllTxsFromTxsTable = async function () {
   return LovefieldDB.db.select()
     .from(_getTxsTable())
-    .orderBy(_getTxsTable[LovefieldDB.txsTableFields.CTM_DATE], LovefieldDB.orders.DESC)
+    .orderBy(_getTxsTable()[LovefieldDB.txsTableFields.CTM_DATE], LovefieldDB.orders.DESC)
     .exec()
     .then(rows => rows);
 };
 
 const _getTxsTable = function () {
-  return LovefieldDB.db.getSchema().table(LovefieldDB.txsTable);
+  return LovefieldDB.db.getSchema().table(LovefieldDB.txsTableName);
 };
