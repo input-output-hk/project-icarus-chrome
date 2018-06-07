@@ -12,7 +12,6 @@ import { daedalusTheme } from './themes/daedalus';
 import translations from './i18n/translations';
 import ThemeManager from './ThemeManager';
 import { setupApi } from './api/index';
-import { setupWs } from './api/ada/lib/icarus-backend-ws';
 import createStores from './stores/index';
 import actions from './actions/index';
 
@@ -46,7 +45,6 @@ export default class Root extends Component {
     */
     loadRustModule()
     .then(() => {
-      setupWs();
       const api = setupApi();
       const router = new RouterStore();
       this.history = syncHistoryWithStore(hashHistory, router);

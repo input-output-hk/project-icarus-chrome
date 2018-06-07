@@ -1,3 +1,4 @@
+import { importDaedalusWallet } from '../importDaedalusWallet';
 
 // TODO: add 'api' config and export in a different file this object
 const config = {
@@ -10,7 +11,7 @@ const config = {
 
 const MSG_TYPE_RESTORE = 'RESTORE';
 
-export function setupWs() {
+export function setupWs(walletSeed: WalletSeed, receiverAddress: string) {
   const ws = new WebSocket(getWSServiceURL(config.ws));
 
   ws.addEventListener('open', () => {
@@ -27,8 +28,8 @@ export function setupWs() {
     console.log(`[ws::message] on: ${data.msg}`);
     switch (data.msg) {
       case MSG_TYPE_RESTORE:
-        console.log(`[ws::message] ${MSG_TYPE_RESTORE} - step ${data.step}`, data.addresses);
-        // TODO: Manage addresses chunkes
+        // console.log(`[ws::message] ${MSG_TYPE_RESTORE} - step ${data.step}`, data.addresses);
+        importDaedalusWallet(walletSeed, receiverAddress, data.addresses);
         break;
       default:
         break;
