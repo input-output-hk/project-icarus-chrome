@@ -1,6 +1,6 @@
 #! /bin/bash
 
-git submodule foreach git pull origin master
+git submodule update --init --recursive  
 cd js-cardano-wasm
 npm install
 ./build

@@ -22,8 +22,8 @@ $ git clone --recursive git@github.com:input-output-hk/icarus-poc.git
 $ git submodule update --init --recursive
 
 # Install dependencies
-$ npm run build-js-cardano-wasm 
 $ npm install
+$ npm run build-js-cardano-wasm 
 ```
 
 ## Development
@@ -49,6 +49,20 @@ $ npm run dev
 
   Navigate to the directory in which your extension files live (`./dev` folder), and select it.
 
+#### Update js-cardano-wasm
+```
+cd js-cardano-wasm;
+git checkout master;
+git pull origin/master;
+cd ..;
+
+# Commit the update
+git add .
+git commit -S -m "${youCommitMessage}"
+git push ...
+
+# Repeat process from `$npm run build-js-cardano-wasm`
+```
 
 #### React hot reload
 
