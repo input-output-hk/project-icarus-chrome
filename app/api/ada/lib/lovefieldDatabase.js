@@ -33,8 +33,7 @@ export const loadLovefieldDB = async() => {
   }
   const schemaBuilder = lf.schema.create('icarus-schema', 1);
   schemaBuilder.createTable(LovefieldDB.txsTableName)
-    .addColumn('id', lf.Type.INTEGER)
-    .addColumn(txsTableFields.CT_AMOUNT, lf.Type.OBJECT)
+    .addColumn(txsTableFields.CT_AMOUNT, lf.Type.NUMBER)
     .addColumn(txsTableFields.CT_BLOCK_NUMBER, lf.Type.STRING)
     .addColumn(txsTableFields.CT_ID, lf.Type.STRING)
     .addColumn(txsTableFields.CT_INPUTS, lf.Type.OBJECT)
@@ -43,8 +42,7 @@ export const loadLovefieldDB = async() => {
     .addColumn(txsTableFields.CTM_DATE, lf.Type.DATE_TIME)
     .addColumn(txsTableFields.CT_OUTPUTS, lf.Type.OBJECT)
     .addColumn(txsTableFields.CT_CONDITION, lf.Type.STRING)
-    .addPrimaryKey(['id'], lf.Order.ASC)
-    .addUnique('unique', [txsTableFields.CT_ID]);
+    .addPrimaryKey([txsTableFields.CT_ID]);
   return await schemaBuilder.connect().then(db => {
     LovefieldDB.db = db;
     return db;
@@ -52,7 +50,7 @@ export const loadLovefieldDB = async() => {
 };
 
 export const insertOrReplaceToTxsTable = function (rows) {
-  LovefieldDB.db.insertOrReplace()
+  return LovefieldDB.db.insertOrReplace()
   .into(_getTxsTable())
   .values(rows)
   .exec()

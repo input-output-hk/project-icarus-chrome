@@ -32,7 +32,7 @@ export async function updateAdaTxsHistory(
   existingTransactions: Array<AdaTransaction>,
   addresses: Array<string>
 ) {
-  const mostRecentTx = existingTransactions[0];
+  const mostRecentTx = Object.assign({}, existingTransactions[0]);
   const dateFrom = mostRecentTx && mostRecentTx.ctMeta ?
     moment(mostRecentTx.ctMeta.ctmDate) :
     moment(new Date(0));
@@ -121,8 +121,8 @@ function _spenderData(txInputs, txOutputs, addresses) {
 
   let amount;
   if (isLocal) amount = outgoing.totalAmount;
-  else if (isOutgoing) amount = outgoing.totalAmount - incoming.totalAmount;
-  else amount = incoming.totalAmount - outgoing.totalAmount;
+  else if (isOutgoing) amount = outgoing.totalAmount.minus(incoming.totalAmount);
+  else amount = incoming.totalAmount.minus(outgoing.totalAmount);
 
   return {
     isOutgoing,

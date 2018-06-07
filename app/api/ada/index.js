@@ -705,7 +705,7 @@ const _conditionToTxState = (condition: string) => {
 const _createTransactionFromServerData = action(
   'AdaApi::_createTransactionFromServerData',
   (data: AdaTransaction) => {
-    const coins = data.ctAmount.getCCoin;
+    const coins = data.ctAmount.getCCoin.c[0];
     const { ctmTitle, ctmDescription, ctmDate } = data.ctMeta;
     return new WalletTransaction({
       id: data.ctId,
