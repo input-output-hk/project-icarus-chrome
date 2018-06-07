@@ -8,16 +8,20 @@ import {
   addressesLimit
 } from '../lib/icarus-backend-api';
 import {
-  insertOrReplaceToDB,
+  insertOrReplaceToTxsTable,
   getDBRow,
   getTxWithDBSchema,
-  getMostRecentTxFromRows
+  getMostRecentTxFromRows,
+  getAllTxsFromTxsTable
 } from '../lib/lovefieldDatabase';
 import {
   getLastBlockNumber,
   saveLastBlockNumber
 } from '../getAdaLastBlockNumber';
-import { getAdaTransactions } from './adaTransactions';
+
+export async function getAdaTransactions() {
+  return await getAllTxsFromTxsTable();
+}
 
 export const getAdaTxsHistoryByWallet = async (): Promise<AdaTransactions> => {
   const transactions = await getAdaTransactions();
@@ -39,7 +43,7 @@ export async function updateAdaTxsHistory(
   return Promise.all(promises)
     .then((groupsOfTransactionsRows) =>
       groupsOfTransactionsRows.map(groupOfTransactionsRows =>
-        insertOrReplaceToDB(groupOfTransactionsRows))
+        insertOrReplaceToTxsTable(groupOfTransactionsRows))
     );
 }
 

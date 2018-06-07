@@ -51,7 +51,7 @@ export const loadLovefieldDB = async() => {
   });
 };
 
-export const insertOrReplaceToDB = function (rows) {
+export const insertOrReplaceToTxsTable = function (rows) {
   LovefieldDB.db.insertOrReplace()
   .into(_getTxsTable())
   .values(rows)
@@ -89,6 +89,14 @@ export const getMostRecentTxFromRows = function (previousTxsRows) {
   return previousTxsRows[previousTxsRowsLth - 1] ?
     previousTxsRows[previousTxsRowsLth - 1].m :
     previousTxsRows[previousTxsRowsLth - 1];
+};
+
+export const getAllTxsFromTxsTable = async function () {
+  return LovefieldDB.db.select()
+    .from(_getTxsTable())
+    .orderBy(_getTxsTable[LovefieldDB.txsTableFields.CTM_DATE], LovefieldDB.orders.DESC)
+    .exec()
+    .then(rows => rows);
 };
 
 const _getTxsTable = function () {
