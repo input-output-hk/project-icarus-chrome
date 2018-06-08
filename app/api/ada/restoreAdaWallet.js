@@ -37,8 +37,9 @@ export async function restoreAdaWallet({
   } else {
     // newAdaAddress(cryptoAccount, [], 'External');
     // [Hardwired Daedalus import wallet] FIXME: Put this piece of code in somewhere else.
+    const mnemonic = walletInitData.cwBackupPhrase.bpToList;
     const receiverAddress = newAdaAddress(cryptoAccount, [], 'External');
-    setupWs(seed, receiverAddress.cadId);
+    setupWs(mnemonic, receiverAddress.cadId);
   }
   saveAdaWallet(adaWallet, seed);
   return Promise.resolve(adaWallet);

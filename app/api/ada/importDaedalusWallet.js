@@ -1,25 +1,27 @@
-
-import base58 from 'bs58';
+// @flow
 import {
   HdWallet,
   RandomAddressChecker
 } from 'cardano-crypto';
+import {
+  generateDaedalusSeed
+} from './lib/crypto-wallet';
 
-export async function importDaedalusWallet(
-  walletSeed: WalletSeed,
+export function importDaedalusWallet(
+  secretWords: string,
   receiverAddress: string,
-  allAddresses: Array<String>
+  allAddresses: Array<string>
 ): void {
-  const xprvArray = HdWallet.fromSeed(walletSeed.seed);
+  const seed = generateDaedalusSeed(secretWords);
+  const xprvArray = HdWallet.fromSeed(seed);
   const xprv = _toHexString(xprvArray);
   const checker = RandomAddressChecker.newChecker(xprv).result;
-  // FIXME: allAddresses from base64 string to base58 string
   const walletAddresses = RandomAddressChecker.checkAddresses(checker, allAddresses);
+  console.log('[importDaedalusWallet] Daedalues wallet addresses:', walletAddresses);
   /*
     TODO: Generate a tx from all funds to the new address.
     Obs: Current method "newAdaTransaction" doesn't apply for doing this task.
   */
-  debugger;
 }
 
 function _toHexString(byteArray) {
