@@ -13,19 +13,15 @@ export function importDaedalusWallet(
   allAddresses: Array<string>
 ): void {
   const seed = generateDaedalusSeed(secretWords);
-  const xprvArray = HdWallet.fromSeed(seed);
-  const xprv = _toHexString(xprvArray);
-  const checker = RandomAddressChecker.newChecker(xprv).result;
+  debugger; // before crash
+  const xprv = HdWallet.fromDaedalusSeed(seed);
+  debugger; // after crash
+  const xprvHex = Buffer.from(xprv).toString('hex');
+  const checker = RandomAddressChecker.newChecker(xprvHex).result;
   const walletAddresses = RandomAddressChecker.checkAddresses(checker, allAddresses);
   console.log('[importDaedalusWallet] Daedalues wallet addresses:', walletAddresses);
   /*
     TODO: Generate a tx from all funds to the new address.
     Obs: Current method "newAdaTransaction" doesn't apply for doing this task.
   */
-}
-
-function _toHexString(byteArray) {
-  return Array.from(byteArray, (byte) => (
-    '0' + (byte & 0xFF).toString(16)).slice(-2)
-  ).join('');
 }

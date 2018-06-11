@@ -5,6 +5,7 @@ declare module 'rust-cardano-crypto' {
     },
     HdWallet: {
       fromSeed(seed: Uint8Array): Uint8Array,
+      fromDaedalusSeed(seed: Uint8Array): Uint8Array,
       toPublic(xprv: Uint8Array): Uint8Array,
       derivePrivate(
         xprv: Uint8Array,

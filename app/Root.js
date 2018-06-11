@@ -45,6 +45,7 @@ export default class Root extends Component {
            we must load the RustModule and Lovefield DB first.
     */
     Promise.all([loadRustModule(), loadLovefieldDB()]).then(() => {
+      console.log('Root::componentDidMount Rust module & local Db loaded');
       const api = setupApi();
       const router = new RouterStore();
       this.history = syncHistoryWithStore(hashHistory, router);
@@ -54,7 +55,7 @@ export default class Root extends Component {
       return true;
     }).catch((error) => {
       // FIXME: Improve error message
-      console.error('Root::loadRustModule unable to load cardano crypto module', error);
+      console.error('Root::componentDidMount unable to load cardano crypto module', error);
     });
   }
 
