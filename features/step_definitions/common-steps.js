@@ -1,8 +1,14 @@
-import { Before, Given, After } from 'cucumber';
+import { BeforeAll, Given, After, AfterAll } from 'cucumber';
 import { createServer } from '../support/mockServer';
 
-Before(() => {
-  createServer();
+let server;
+
+BeforeAll(() => {
+  server = createServer();
+});
+
+AfterAll(() => {
+  server.close();
 });
 
 After(async function () {

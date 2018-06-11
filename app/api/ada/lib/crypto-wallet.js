@@ -1,20 +1,22 @@
 // @flow
 
 import bip39 from 'bip39';
-import { Blake2b, Wallet } from 'cardano-crypto';
+import { Blake2b, Wallet } from 'rust-cardano-crypto';
 import {
   encryptWithPassword,
   decryptWithPassword
 } from '../../../utils/passwordCipher';
-import {
-  blockchainNetworkConfig,
-  NETWORK_MODE,
-} from '../../../config/blockchainNetworkConfig';
+
+import type { ConfigType } from '../../../../config/config-types';
 
 export type WalletSeed = {
   seed: ?Uint8Array,
-  encryptedSeed: ?string
+  encryptedSeed: ?string,
 };
+
+declare var CONFIG: ConfigType;
+
+const protocolMagic = CONFIG.network.protocolMagic;
 
 export const generateAdaMnemonic = () => bip39.generateMnemonic(128).split(' ');
 
@@ -45,6 +47,6 @@ export function getCryptoWalletFromSeed(
   }
   const seedAsArray = Object.values(seed);
   const wallet = Wallet.fromSeed(seedAsArray).result;
-  wallet.config.protocol_magic = blockchainNetworkConfig[NETWORK_MODE].PROTOCOL_MAGIC;
+  wallet.config.protocol_magic = protocolMagic;
   return wallet;
 }
