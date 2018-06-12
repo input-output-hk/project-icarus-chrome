@@ -1,23 +1,16 @@
 // @flow
 import {
-  HdWallet,
   RandomAddressChecker
 } from 'rust-cardano-crypto';
-import {
-  generateDaedalusSeed
-} from './lib/crypto-wallet';
 
 export function importDaedalusWallet(
   secretWords: string,
   receiverAddress: string,
   allAddresses: Array<string>
 ): void {
-  const seed = generateDaedalusSeed(secretWords);
-  debugger; // before crash
-  const xprv = HdWallet.fromDaedalusSeed(seed);
-  debugger; // after crash
-  const xprvHex = Buffer.from(xprv).toString('hex');
-  const checker = RandomAddressChecker.newChecker(xprvHex).result;
+  debugger;
+  const checker = RandomAddressChecker.newCheckerFromMnemonics(secretWords).result;
+  debugger;
   const walletAddresses = RandomAddressChecker.checkAddresses(checker, allAddresses);
   console.log('[importDaedalusWallet] Daedalues wallet addresses:', walletAddresses);
   /*
