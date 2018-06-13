@@ -1,5 +1,6 @@
 import { create, bodyParser, defaults } from 'json-server';
 import mockData from './mockData.json';
+import { getTxs, getTxAddresses } from './mockDataFunctions';
 
 const moment = require('moment');
 
@@ -46,7 +47,35 @@ export function createServer() {
   server.post('/api/txs/history', (req, res) => {
     validateAddressesReq(req.body);
     validateDatetimeReq(req.body);
-    res.send();
+    // FIXME: Simplify logic
+    // Searches for txs hashes of the given addresses
+    const txsHashes = getTxAddresses()
+      .filter(txAddress => req.body.addresses.includes(txAddress.address))
+      .map(txAddress => txAddress.tx_hash);
+    // Filters all txs according to hash and date
+    const filteredTxs = getTxs().filter(tx => {
+      const extraFilter = req.body.txHash ?
+        tx.hash > req.body.txHash :
+        !req.body.txHash;
+      return txsHashes.includes(tx.hash) &&
+        moment(tx.time) >= moment(req.body.dateFrom) &&
+        extraFilter;
+    });
+    // Returns a chunk of 20 txs, with the best block num and sorted
+    const txsChunk = filteredTxs.slice(0, 20);
+    const txsWithBlockNumber = txsChunk.map(txFromChunk => {
+      const txWithBlockNumber = Object.assign({}, txFromChunk);
+      txWithBlockNumber.best_block_num = mockData.bestblock[0].best_block_num;
+      return txWithBlockNumber;
+    });
+    const txs = txsWithBlockNumber.sort((txA, txB) => {
+      if (moment(txA.time) < moment(txB.time)) return -1;
+      if (moment(txA.time) > moment(txB.time)) return 1;
+      if (txA.hash < txB.hash) return -1;
+      if (txA.hash > txB.hash) return 1;
+      return 0;
+    });
+    res.send(txs);
   });
 
   server.post('/api/txs/signed', (req, res) => {
