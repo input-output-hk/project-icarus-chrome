@@ -1,6 +1,8 @@
 import { create, bodyParser, defaults } from 'json-server';
 import mockData from './mockData.json';
 
+const moment = require('moment');
+
 const middlewares = [...defaults(), bodyParser];
 
 const port = 8080;
@@ -15,6 +17,13 @@ export function createServer() {
       throw new Error('Addresses request length should be (0, 20]');
     }
     // TODO: Add address validation
+    return true;
+  }
+
+  function validateDatetimeReq({ dateFrom } = {}) {
+    if (!dateFrom || !moment(dateFrom).isValid()) {
+      throw new Error('DateFrom should be a valid datetime');
+    }
     return true;
   }
 
@@ -35,7 +44,8 @@ export function createServer() {
   });
 
   server.post('/api/txs/history', (req, res) => {
-    // TODO: Implement
+    validateAddressesReq(req.body);
+    validateDatetimeReq(req.body);
     res.send();
   });
 
