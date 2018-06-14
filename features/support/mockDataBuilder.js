@@ -1,20 +1,51 @@
-const moment = require('moment');
+import moment from 'moment';
 
-export function getAddresses(addressAmount, addressPrefix) {
-  return _generateListOfStrings(addressPrefix)
-    .slice(0, addressAmount).reduce((newAddresses, address) => {
-      newAddresses[address] = {
-        cadAmount: {
-          getCCoin: 0
-        },
-        cadId: address,
-        cadIsUsed: false,
-        account: 0,
-        change: 0,
-        index: 0
-      };
-      return newAddresses;
-    }, {});
+import mockData from './mockData.json';
+
+let builtMockData;
+
+export function getMockData() {
+  return builtMockData;
+}
+
+export function buildMockData(feature) {
+  builtMockData = Object.assign({}, mockData.default, mockData[feature]);
+}
+
+function _generateListOfStrings(prefix) {
+  const strings = [];
+  // Generates strings ending with A-Z
+  for (let i = 65; i < 90; i++) {
+    strings.push(prefix + String.fromCharCode(i));
+  }
+  // Generates strings ending with a-z
+  for (let i = 97; i < 122; i++) {
+    strings.push(prefix + String.fromCharCode(i));
+  }
+  return strings;
+}
+
+export function getAddresses(
+  addressAmount,
+  addressPrefix = 'Ae2tdPwUPEZASB8nPKk1VsePbQZY8ZVv4mGebJ4UwmSBhRo9oR9EqkSzxo'
+) {
+  if (!addressAmount) {
+    return builtMockData.addresses;
+  }
+  const addresses = _generateListOfStrings(addressPrefix);
+  return addresses.slice(0, addressAmount).reduce((newAddresses, address) => {
+    newAddresses[address] = {
+      cadAmount: {
+        getCCoin: 0
+      },
+      cadId: address,
+      cadIsUsed: false,
+      account: 0,
+      change: 0,
+      index: 0
+    };
+    return newAddresses;
+  }, {});
 }
 
 export function getTxs(txsAmount, addressPrefix, hashPrefix) {
@@ -50,17 +81,4 @@ export function getTxAddresses(txsAmount, addressPrefix, hashPrefix) {
       address: addressPrefix + 'W',
       tx_hash: txHash
     }));
-}
-
-function _generateListOfStrings(prefix) {
-  const listOfStrings = [];
-  // Generates strings ending with A-Z
-  for (let i = 65; i < 90; i++) {
-    listOfStrings.push(prefix + String.fromCharCode(i));
-  }
-  // Generates strings ending with a-z
-  for (let i = 97; i < 122; i++) {
-    listOfStrings.push(prefix + String.fromCharCode(i));
-  }
-  return listOfStrings;
 }

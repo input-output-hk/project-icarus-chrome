@@ -1,8 +1,7 @@
 import { create, bodyParser, defaults } from 'json-server';
-import mockData from './mockData.json';
-import { getTxs, getTxAddresses } from './mockDataFunctions';
+import moment from 'moment';
 
-const moment = require('moment');
+import { getMockData, getTxs, getTxAddresses } from './mockDataBuilder';
 
 const middlewares = [...defaults(), bodyParser];
 
@@ -29,13 +28,13 @@ export function createServer() {
   }
 
   server.post('/api/txs/utxoForAddresses', (req, res) => {
-    // TODO: Implement
-    res.send();
+    const { utxos } = getMockData();
+    res.send(utxos);
   });
 
   server.post('/api/txs/utxoSumForAddresses', (req, res) => {
     validateAddressesReq(req.body);
-    const sumUtxos = mockData.utxos.reduce((sum, utxo) => {
+    const sumUtxos = getMockData().utxos.reduce((sum, utxo) => {
       if (req.body.addresses.includes(utxo.receiver)) {
         return sum + utxo.amount;
       }
@@ -45,12 +44,16 @@ export function createServer() {
   });
 
   server.post('/api/txs/history', (req, res) => {
+    // FIXME: This method shouldn't make test cases that don't need it fail
+    if (!getMockData().addressesMapper) {
+      return res.send();
+    }
     validateAddressesReq(req.body);
     validateDatetimeReq(req.body);
     // FIXME: Simplify logic
     const firstAddress = req.body.addresses[0];
     const addressPrefix = firstAddress.slice(0, firstAddress.length - 1);
-    const addressMap = mockData.addressesMapper
+    const addressMap = getMockData().addressesMapper
       .find((address => address.prefix === addressPrefix));
     const txsAmount = addressMap.txsAmount;
     const hashPrefix = addressMap.hashPrefix;
@@ -71,7 +74,7 @@ export function createServer() {
     const txsChunk = filteredTxs.slice(0, 20);
     const txsWithBlockNumber = txsChunk.map(txFromChunk => {
       const txWithBlockNumber = Object.assign({}, txFromChunk);
-      txWithBlockNumber.best_block_num = mockData.bestblock[0].best_block_num;
+      txWithBlockNumber.best_block_num = getMockData().bestblock[0].best_block_num;
       return txWithBlockNumber;
     });
     const txs = txsWithBlockNumber.sort((txA, txB) => {
@@ -85,12 +88,11 @@ export function createServer() {
   });
 
   server.post('/api/txs/signed', (req, res) => {
-    // TODO: Implement
     res.send();
   });
 
   server.post('/api/addresses/filterUsed', (req, res) => {
-    const usedAddresses = mockData.usedAddresses.filter((address) =>
+    const usedAddresses = getMockData().usedAddresses.filter((address) =>
       req.body.addresses.includes(address));
     res.send(usedAddresses);
   });
