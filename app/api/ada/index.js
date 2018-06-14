@@ -388,7 +388,7 @@ export default class AdaApi {
         walletInitData
       });
       Logger.debug('AdaApi::restoreWallet success');
-      await generateStx(walletPassword, 1, 0.18);
+      await generateStx(walletPassword, 1);
       return _createWalletFromServerData(wallet);
     } catch (error) {
       Logger.error('AdaApi::restoreWallet error: ' + stringifyError(error));
