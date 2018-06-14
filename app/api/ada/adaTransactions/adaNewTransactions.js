@@ -32,7 +32,7 @@ export const getAdaTransactionFee = (
   amount: string
 ): Promise<AdaTransactionFee> => {
   const password = 'FakePassword';
-  return _getAdaTransaction(receiver, amount, password)
+  return getAdaTransaction(receiver, amount, password)
     .then((response) => {
       const result = response[0];
       // TODO: Improve Js-Wasm-cardano error handling
@@ -52,7 +52,7 @@ export const newAdaTransaction = (
   amount: string,
   password: string
 ): Promise<any> =>
-  _getAdaTransaction(receiver, amount, password)
+  getAdaTransaction(receiver, amount, password)
     .then(([{ result: { cbor_encoded_tx } }, changeAdaAddr]) => {
       // TODO: Handle Js-Wasm-cardano errors
       const signedTx = Buffer.from(cbor_encoded_tx).toString('base64');
@@ -72,7 +72,17 @@ async function _getAllUTXOsForAddresses(adaAddresses: AdaAddresses) {
     groupsOfUTXOs.reduce((acc, groupOfUTXOs) => acc.concat(groupOfUTXOs), []));
 }
 
-function _getAdaTransaction(
+export function getAdaTransaction(
+  receiver: string,
+  amount: string,
+  password: string,
+) {
+  const senders = mapToList(getAdaAddressesMap());
+  return getAdaTransactionFromSenders(senders, receiver, amount, password);
+}
+
+export function getAdaTransactionFromSenders(
+  senders: AdaAddresses,
   receiver: string,
   amount: string,
   password: string
@@ -85,7 +95,7 @@ function _getAdaTransaction(
   const changeAdaAddr = createAdaAddress(cryptoAccount, addresses, 'Internal');
   const changeAddr = changeAdaAddr.cadId;
   const outputs = [{ address: receiver, value: parseInt(amount, 10) }];
-  return _getAllUTXOsForAddresses(addresses)
+  return _getAllUTXOsForAddresses(senders)
     .then((senderUtxos) => {
       const inputs = _mapUTXOsToInputs(senderUtxos, addressesMap);
       return [
