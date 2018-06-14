@@ -25,9 +25,14 @@ Given(/^There is no wallet stored$/, async function () {
   await this.waitForElement('.WalletAddDialog');
 });
 
-Given(/^There is a wallet stored with ([^"]*) addresses$/, async function (addressAmount) {
+Given(/^There is a wallet stored with ([^"]*) addresses starting with "([^"]*)"$/, async function (
+  addressAmount,
+  prefix
+) {
   const { seed, wallet } = mockData;
-  const addresses = getAddresses(addressAmount);
+  const addressPrefix = mockData.addressesMapper
+    .find((address => address.prefix === prefix)).prefix;
+  const addresses = getAddresses(addressAmount, addressPrefix);
   this.saveToLocalStorage('ADDRESSES', addresses);
   this.saveToLocalStorage('SEED', seed);
   this.saveToLocalStorage('WALLET', wallet);

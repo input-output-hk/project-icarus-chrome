@@ -48,12 +48,18 @@ export function createServer() {
     validateAddressesReq(req.body);
     validateDatetimeReq(req.body);
     // FIXME: Simplify logic
+    const firstAddress = req.body.addresses[0];
+    const addressPrefix = firstAddress.slice(0, firstAddress.length - 1);
+    const addressMap = mockData.addressesMapper
+      .find((address => address.prefix === addressPrefix));
+    const txsAmount = addressMap.txsAmount;
+    const hashPrefix = addressMap.hashPrefix;
     // Searches for txs hashes of the given addresses
-    const txsHashes = getTxAddresses()
+    const txsHashes = getTxAddresses(txsAmount, addressPrefix, hashPrefix)
       .filter(txAddress => req.body.addresses.includes(txAddress.address))
       .map(txAddress => txAddress.tx_hash);
     // Filters all txs according to hash and date
-    const filteredTxs = getTxs().filter(tx => {
+    const filteredTxs = getTxs(txsAmount, addressPrefix, hashPrefix).filter(tx => {
       const extraFilter = req.body.txHash ?
         tx.hash > req.body.txHash :
         !req.body.txHash;

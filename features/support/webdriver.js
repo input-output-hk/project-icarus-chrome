@@ -25,7 +25,7 @@ function CustomWorld() {
 
   this.getElementBy = (locator, method = By.css) => this.driver.findElement(method(locator));
 
-  this.getText = async (locator) => this.getElementBy(locator).getText();
+  this.getText = (locator) => this.getElementBy(locator).getText();
 
   const clickElement = async (locator, method) => {
     const clickable = await this.getElementBy(locator, method);

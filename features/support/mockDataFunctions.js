@@ -1,7 +1,6 @@
 const moment = require('moment');
 
-export function getAddresses(addressAmount) {
-  const addressPrefix = 'Ae2tdPwUPEZASB8nPKk1VsePbQZY8ZVv4mGebJ4UwmSBhRo9oR9EqkSzxo';
+export function getAddresses(addressAmount, addressPrefix) {
   return _generateListOfStrings(addressPrefix)
     .slice(0, addressAmount).reduce((newAddresses, address) => {
       newAddresses[address] = {
@@ -18,14 +17,13 @@ export function getAddresses(addressAmount) {
     }, {});
 }
 
-export function getTxs(txsAmount) {
-  const addressPrefix = 'e97Nafb63e9dc18a54b35cb51i63317461978bc7c90o02661d33lf2464ef693';
+export function getTxs(txsAmount, addressPrefix, hashPrefix) {
   const initialTime = '2018-05-10T13:51:33.000Z';
-  return _generateListOfStrings(addressPrefix)
+  return _generateListOfStrings(hashPrefix)
     .slice(0, txsAmount).map((txHash, index) => {
       const oddIndex = index % 2 !== 0;
       const addresses = [
-        'Ae2tdPwUPEZASB8nPKk1VsePbQZY8ZVv4mGebJ4UwmSBhRo9oR9EqkSzxoW',
+        addressPrefix + 'W',
         'Ae2tdPwUPEZASB8nPKk1VsePbQZY8ZVv4mGebJ4UwmSBhRo9oR9Eqkzyxwv',
         'Ae2tdPwUPEZASB8nPKk1VsePbQZY8ZVv4mGebJ4UwmSBhRo9oR9Eqkabcde'
       ];
@@ -46,11 +44,10 @@ export function getTxs(txsAmount) {
     });
 }
 
-export function getTxAddresses(txAddressesAmount) {
-  const addressPrefix = 'e97Nafb63e9dc18a54b35cb51i63317461978bc7c90o02661d33lf2464ef693';
-  return _generateListOfStrings(addressPrefix)
-    .slice(0, txAddressesAmount).map(txHash => ({
-      address: 'Ae2tdPwUPEZASB8nPKk1VsePbQZY8ZVv4mGebJ4UwmSBhRo9oR9EqkSzxoW',
+export function getTxAddresses(txsAmount, addressPrefix, hashPrefix) {
+  return _generateListOfStrings(hashPrefix)
+    .slice(0, txsAmount).map(txHash => ({
+      address: addressPrefix + 'W',
       tx_hash: txHash
     }));
 }
