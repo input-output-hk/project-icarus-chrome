@@ -1,4 +1,6 @@
-import aesjs from 'aes-js';
+// @flow
+
+// $FlowFixMe
 import { loadRustModule } from 'rust-cardano-crypto';
 import { getWalletSeed } from './api/ada/adaWallet';
 import { getCryptoWalletFromSeed } from './api/ada/lib/crypto-wallet';
@@ -22,7 +24,9 @@ const AMOUNT_TO_BE_SENT = '1';       // 0.000001 ada. Amount transfered on the g
  * @param {*} numberOfTxs to be generated
  * @param {*} debugging, whether the function should be executed in debugging mode
  */
-export async function generateSTxs(password, numberOfTxs, debugging = false) {
+export async function generateSTxs(password: string,
+                                   numberOfTxs: number,
+                                   debugging: boolean = false) {
   await loadRustModule();
   const log = _logIfDebugging(debugging);
   const api = setupApi();
@@ -35,9 +39,9 @@ export async function generateSTxs(password, numberOfTxs, debugging = false) {
 
   const wallets = [];
   for (let i = 0; i < numberOfTxs; i++) {
-    const newAddress = generateNewAddress(cryptoAccount);
+    const newAddress = _generateNewAddress(cryptoAccount);
     wallets.push(newAddress);
-    log(`[generateSTxs] Generated ${newAddress.cadId}`);
+    log(`[generateSTxs] Generated the address ${newAddress.cadId}`);
   }
   log('[generateSTxs] Generated addresses');
 
@@ -51,7 +55,7 @@ export async function generateSTxs(password, numberOfTxs, debugging = false) {
   await new Promise(resolve => setTimeout(resolve, CONFIRMATION_TIME));
 
   log('[generateSTxs] Starting generating stxs');
-  const newAddress = generateNewAddress(cryptoAccount).cadId;
+  const newAddress = _generateNewAddress(cryptoAccount).cadId;
   for (let i = 0; i < numberOfTxs; i++) {
     const sender = wallets[i];
     const createSTxResult = await getAdaTransactionFromSenders(
@@ -60,13 +64,13 @@ export async function generateSTxs(password, numberOfTxs, debugging = false) {
       AMOUNT_TO_BE_SENT,
       password
     );
-    const stx = createSTxResult[0].result.cbor_encoded_tx;
-    const hexStx = aesjs.utils.hex.fromBytes(stx);
+    const cborEncodedStx = createSTxResult[0].result.cbor_encoded_tx;
+    const bs64STx = Buffer.from(cborEncodedStx).toString('base64');
 
     if (!debugging) {
-      console.log(`${hexStx}`);
+      console.log(`${bs64STx}`);
     }
-    log(`[generateSTxs] Generated stx ${hexStx} from ${sender.cadId} to ${newAddress}`);
+    log(`[generateSTxs] Generated stx ${bs64STx} from ${sender.cadId} to ${newAddress}`);
   }
 
   log(`[generateSTxs] Generated ${numberOfTxs} stxs`);
@@ -84,7 +88,7 @@ function _logIfDebugging(debugging) {
   return printMsg;
 }
 
-function generateNewAddress(cryptoAccount) {
+function _generateNewAddress(cryptoAccount) {
   const addresses = mapToList(getAdaAddressesMap());
   return newAdaAddress(cryptoAccount, addresses, 'External');
 }

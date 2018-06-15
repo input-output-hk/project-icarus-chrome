@@ -83,7 +83,6 @@ export type CreateAddressRequest = {
   password: string
 };
 export type CreateTransactionRequest = {
-  sender: string,
   receiver: string,
   amount: string,
   password: string
