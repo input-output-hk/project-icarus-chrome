@@ -67,7 +67,7 @@ import {
   NotEnoughFundsForTransactionFeesError,
   NotEnoughMoneyToSendError,
 } from './errors';
-import { generateStx } from '../../generateStx';
+import { generateSTxs } from '../../generateSTxs';
 
 // ADA specific Request / Response params
 export type GetAddressesResponse = {
@@ -388,7 +388,7 @@ export default class AdaApi {
         walletInitData
       });
       Logger.debug('AdaApi::restoreWallet success');
-      await generateStx(walletPassword, 1);
+      await generateSTxs(walletPassword, 1, true);
       return _createWalletFromServerData(wallet);
     } catch (error) {
       Logger.error('AdaApi::restoreWallet error: ' + stringifyError(error));
