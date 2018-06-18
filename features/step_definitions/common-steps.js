@@ -28,7 +28,7 @@ Given(/^There is no wallet stored$/, async function () {
   await this.waitForElement('.WalletAddDialog');
 });
 
-Given(/^There is a wallet stored( with ([^"]*) addresses)?( starting with "([^"]*)")?$/,
+Given(/^There is a wallet stored( with ([^"]*) addresses)?( starting with ([^"]*))?$/,
   async function (addressAmount, addressPrefix) {
     const { seed, wallet, addressesMapper } = getMockData();
     const address = addressesMapper &&

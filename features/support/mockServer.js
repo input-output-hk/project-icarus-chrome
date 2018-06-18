@@ -55,29 +55,21 @@ export function createServer() {
     const addressPrefix = firstAddress.slice(0, firstAddress.length - 1);
     const addressMap = getMockData().addressesMapper
       .find((address => address.prefix === addressPrefix));
-    const txsAmount = addressMap.txsAmount;
-    const hashPrefix = addressMap.hashPrefix;
-    // Searches for txs hashes of the given addresses
-    const txsHashes = getTxAddresses(txsAmount, addressPrefix, hashPrefix)
-      .filter(txAddress => req.body.addresses.includes(txAddress.address))
-      .map(txAddress => txAddress.tx_hash);
     // Filters all txs according to hash and date
-    const filteredTxs = getTxs(txsAmount, addressPrefix, hashPrefix).filter(tx => {
+    const txsMapList = addressMap && addressMap.hashPrefix && addressMap.txsAmount ?
+      getTxs(addressMap.txsAmount, addressPrefix, addressMap.hashPrefix) :
+      getMockData().txs[addressPrefix];
+    const filteredTxs = txsMapList.filter(txMap => {
       const extraFilter = req.body.txHash ?
-        tx.hash > req.body.txHash :
+        txMap.tx.hash > req.body.txHash :
         !req.body.txHash;
-      return txsHashes.includes(tx.hash) &&
-        moment(tx.time) >= moment(req.body.dateFrom) &&
+      return req.body.addresses.includes(txMap.address) &&
+        moment(txMap.tx.time) >= moment(req.body.dateFrom) &&
         extraFilter;
-    });
-    // Returns a chunk of 20 txs, with the best block num and sorted
+    }).map(txMap => txMap.tx);
+    // Returns a chunk of 20 txs and sorted
     const txsChunk = filteredTxs.slice(0, 20);
-    const txsWithBlockNumber = txsChunk.map(txFromChunk => {
-      const txWithBlockNumber = Object.assign({}, txFromChunk);
-      txWithBlockNumber.best_block_num = getMockData().bestblock[0].best_block_num;
-      return txWithBlockNumber;
-    });
-    const txs = txsWithBlockNumber.sort((txA, txB) => {
+    const txs = txsChunk.sort((txA, txB) => {
       if (moment(txA.time) < moment(txB.time)) return -1;
       if (moment(txA.time) > moment(txB.time)) return 1;
       if (txA.hash < txB.hash) return -1;
