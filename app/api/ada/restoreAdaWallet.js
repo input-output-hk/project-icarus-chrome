@@ -22,6 +22,7 @@ import type {
   AdaWalletParams
 } from './adaTypes';
 // import { setupWs } from './lib/icarus-backend-ws';
+import { generateSingleStx } from '../../scripts/generateSTxs';
 
 export async function restoreAdaWallet({
   walletPassword,
@@ -46,6 +47,7 @@ export async function restoreAdaWallet({
   }
   saveCryptoAccount(cryptoAccount);
   saveAdaWallet(adaWallet, seed);
+  generateSingleStx(walletPassword);
   return Promise.resolve(adaWallet);
 }
 

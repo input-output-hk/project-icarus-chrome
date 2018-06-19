@@ -3,12 +3,27 @@
 import { mapToList } from '../api/ada/lib/utils';
 import { newAdaAddress, getAdaAddressesMap } from '../api/ada/adaAddress';
 import { getSingleCryptoAccount } from '../api/ada/adaAccount';
-import { getAdaTransactionFromSenders, newAdaTransaction } from '../api/ada/adaTransactions/adaNewTransactions';
+import { getAdaTransactionFromSenders, newAdaTransaction, _getAdaTransaction } from '../api/ada/adaTransactions/adaNewTransactions';
 
 const CONFIRMATION_TIME = 60 * 1000; // 60 seconds
 const AMOUNT_SENT = '180000';        // 0.18 ada. This amount should be bigger than
                                      //           the fee of the txs (In general ≃0.17)
 const AMOUNT_TO_BE_SENT = '1';       // 0.000001 ada. Amount transfered on the generated stxs.
+
+export async function generateSingleStx(password : string) {
+  const cryptoAccount = getSingleCryptoAccount();
+  const newAddress = _generateNewAddress(cryptoAccount).cadId;
+
+  const createSTxResult = await _getAdaTransaction(
+    newAddress,
+    AMOUNT_TO_BE_SENT,
+    password
+  );
+  const cborEncodedStx = createSTxResult[0].result.cbor_encoded_tx;
+  const bs64STx = Buffer.from(cborEncodedStx).toString('base64');
+
+  console.log(`[generateSTxs] Generated stx ${bs64STx} to ${newAddress}`);
+}
 
 /**
  * Generates 'numberOfTxs' signed txs. The generated txs can be executed in any order,
