@@ -4,6 +4,7 @@ import { Provider, observer } from 'mobx-react';
 import { ThemeProvider } from 'react-css-themr';
 import { Router } from 'react-router';
 import { addLocaleData, IntlProvider } from 'react-intl';
+import en from 'react-intl/locale-data/en';
 import ko from 'react-intl/locale-data/ko';
 import { Routes } from './Routes';
 import { daedalusTheme } from './themes/daedalus';
@@ -13,7 +14,7 @@ import type { ActionsMap } from './actions/index';
 import ThemeManager from './ThemeManager';
 
 // https://github.com/yahoo/react-intl/wiki#loading-locale-data
-addLocaleData([...ko]);
+addLocaleData([...en, ...ko]);
 
 @observer
 export default class App extends Component<{
