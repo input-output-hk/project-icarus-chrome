@@ -108,6 +108,10 @@ const baseDevConfig = () => ({
         loader: 'raw-loader',
       },
       {
+        test: /\.pem$/,
+        loader: 'file-loader',
+      },
+      {
         test: /\.(eot|otf|ttf|woff|woff2)$/,
         loader: 'file-loader'
       },

@@ -15,34 +15,31 @@ import {
   GetPendingTxsForAddressesApiError,
   InvalidWitnessError
 } from '../errors';
+import ca from '../../../../tls-files/ca.pem';
+const https = require('https');
 
 declare var CONFIG: ConfigType;
 const backendUrl = CONFIG.network.backendUrl;
 
+const instance = axios.create({
+  httpsAgent: new https.Agent({ ca })
+});
+
 // TODO: Refactor service call in order to re-use common parameters
 
 export const getUTXOsForAddresses = (addresses: Array<string>) =>
-  axios(`${backendUrl}/api/txs/utxoForAddresses`,
-    {
-      method: 'post',
-      data: {
-        addresses
-      }
-    }
-  ).then(response => response.data)
+  instance.post('/api/txs/utxoForAddresses', { addresses }
+  ).then(response => {
+    console.log(response);
+    return response.data;
+  })
   .catch((error) => {
     Logger.error('yoroi-backend-api::getUTXOsForAddresses error: ' + stringifyError(error));
     throw new GetUtxosForAddressesApiError();
   });
 
 export const getUTXOsSumsForAddresses = (addresses: Array<string>) =>
-  axios(`${backendUrl}/api/txs/utxoSumForAddresses`,
-    {
-      method: 'post',
-      data: {
-        addresses
-      }
-    }
+  instance.post('/api/txs/utxoSumForAddresses', { addresses }
   ).then(response => response.data)
   .catch((error) => {
     Logger.error('yoroi-backend-api::getUTXOsSumsForAddresses error: ' + stringifyError(error));
@@ -51,28 +48,20 @@ export const getUTXOsSumsForAddresses = (addresses: Array<string>) =>
 
 export const getTransactionsHistoryForAddresses = (addresses: Array<string>,
   dateFrom: Moment) =>
-  axios(`${backendUrl}/api/txs/history`,
-    {
-      method: 'post',
-      data: {
-        addresses,
-        dateFrom
-      }
-    }
-  ).then(response => response.data)
+  instance.post(`${backendUrl}/api/txs/history`, {
+    addresses,
+    dateFrom
+  }).then(response => {
+    console.log(response);
+    return response.data;
+  })
   .catch((error) => {
     Logger.error('yoroi-backend-api::getTransactionsHistoryForAddresses error: ' + stringifyError(error));
     throw new GetTxHistoryForAddressesApiError();
   });
 
 export const sendTx = (signedTx: string) =>
-  axios(`${backendUrl}/api/txs/signed`,
-    {
-      method: 'post',
-      data: {
-        signedTx
-      }
-    }
+  instance.post('/api/txs/signed', { signedTx }
   ).then(response => response.data)
   .catch((error) => {
     Logger.error('yoroi-backend-api::sendTx error: ' + stringifyError(error));
@@ -83,13 +72,7 @@ export const sendTx = (signedTx: string) =>
   });
 
 export const checkAddressesInUse = (addresses: Array<string>) =>
-  axios(`${backendUrl}/api/addresses/filterUsed`,
-    {
-      method: 'post',
-      data: {
-        addresses
-      }
-    }
+  instance.post('/api/addresses/filterUsed', { addresses }
   ).then(response => response.data)
   .catch((error) => {
     Logger.error('yoroi-backend-api::checkAddressesInUse error: ' + stringifyError(error));
@@ -97,13 +80,7 @@ export const checkAddressesInUse = (addresses: Array<string>) =>
   });
 
 export const getPendingTxsForAddresses = (addresses: Array<string>) =>
-  axios(`${backendUrl}/api/txs/pending`,
-    {
-      method: 'post',
-      data: {
-        addresses
-      }
-    }
+  instance.post('/api/txs/pending', { addresses }
   ).then(response => response.data)
   .catch((error) => {
     Logger.error('yoroi-backend-api::getPendingTxsForAddresses error: ' + stringifyError(error));
