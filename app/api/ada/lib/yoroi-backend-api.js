@@ -21,14 +21,16 @@ const https = require('https');
 declare var CONFIG: ConfigType;
 const backendUrl = CONFIG.network.backendUrl;
 
+const httpsAgent = new https.Agent({ ca, rejectUnauthorized: true });
+
 const instance = axios.create({
-  httpsAgent: new https.Agent({ ca })
+  httpsAgent
 });
 
 // TODO: Refactor service call in order to re-use common parameters
 
 export const getUTXOsForAddresses = (addresses: Array<string>) =>
-  instance.post('/api/txs/utxoForAddresses', { addresses }
+  instance.post(`${backendUrl}/api/txs/utxoForAddresses`, { addresses }, { httpsAgent }
   ).then(response => {
     console.log(response);
     return response.data;
@@ -39,7 +41,7 @@ export const getUTXOsForAddresses = (addresses: Array<string>) =>
   });
 
 export const getUTXOsSumsForAddresses = (addresses: Array<string>) =>
-  instance.post('/api/txs/utxoSumForAddresses', { addresses }
+  instance.post(`${backendUrl}/api/txs/utxoSumForAddresses`, { addresses }, { httpsAgent }
   ).then(response => response.data)
   .catch((error) => {
     Logger.error('yoroi-backend-api::getUTXOsSumsForAddresses error: ' + stringifyError(error));
@@ -51,7 +53,7 @@ export const getTransactionsHistoryForAddresses = (addresses: Array<string>,
   instance.post(`${backendUrl}/api/txs/history`, {
     addresses,
     dateFrom
-  }).then(response => {
+  }, { httpsAgent }).then(response => {
     console.log(response);
     return response.data;
   })
@@ -61,7 +63,7 @@ export const getTransactionsHistoryForAddresses = (addresses: Array<string>,
   });
 
 export const sendTx = (signedTx: string) =>
-  instance.post('/api/txs/signed', { signedTx }
+  instance.post(`${backendUrl}/api/txs/signed`, { signedTx }, { httpsAgent }
   ).then(response => response.data)
   .catch((error) => {
     Logger.error('yoroi-backend-api::sendTx error: ' + stringifyError(error));
@@ -72,7 +74,7 @@ export const sendTx = (signedTx: string) =>
   });
 
 export const checkAddressesInUse = (addresses: Array<string>) =>
-  instance.post('/api/addresses/filterUsed', { addresses }
+  instance.post(`${backendUrl}/api/addresses/filterUsed`, { addresses }, { httpsAgent }
   ).then(response => response.data)
   .catch((error) => {
     Logger.error('yoroi-backend-api::checkAddressesInUse error: ' + stringifyError(error));
