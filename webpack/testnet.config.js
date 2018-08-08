@@ -103,6 +103,10 @@ module.exports = {
           'markdown-loader',
         ]
       },
+      {
+        test: /\.pem$/,
+        loader: 'file-loader',
+      },
     ]
   }
 };

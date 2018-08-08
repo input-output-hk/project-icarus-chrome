@@ -308,15 +308,6 @@ export class CheckAdressesInUseApiError extends LocalizableError {
   }
 }
 
-export class GetPendingTxsForAddressesApiError extends LocalizableError {
-  constructor() {
-    super({
-      id: messages.getPendingTxsForAddressesApiError.id,
-      defaultMessage: messages.getPendingTxsForAddressesApiError.defaultMessage
-    });
-  }
-}
-
 export class InvalidWitnessError extends LocalizableError {
   constructor() {
     super({
