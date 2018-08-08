@@ -3872,7 +3872,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "!!!Unable to transfer funds.",
+        "defaultMessage": "!!!Error while processing. Check if funds were transfered or try again.",
         "description": "\"Unable to transfer funds.\" error message",
         "end": {
           "column": 3,

@@ -29,7 +29,7 @@
   "api.errors.updateAdaWalletError": "Error while updating ada wallet.",
   "app.errors.unknowError": "Unknown error.",
   "daedalusTransfer.error.noTransferTxError": "There is no transaction to be send.",
-  "daedalusTransfer.error.transferFundsError": "Unable to transfer funds.",
+  "daedalusTransfer.error.transferFundsError": "!!!Error while processing. Check if funds were transfered or try again.",
   "daedalusTransfer.error.webSocketRestoreError": "Error while restoring blockchain addresses.",
   "daedalusTransfer.errorPage.backButton.label": "Back",
   "daedalusTransfer.errorPage.title.label": "Unable to restore Daedalus wallet.",
