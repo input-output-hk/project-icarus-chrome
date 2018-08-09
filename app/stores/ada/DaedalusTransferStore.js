@@ -185,7 +185,7 @@ export default class DaedalusTransferStore extends Store {
 const messages = defineMessages({
   transferFundsError: {
     id: 'daedalusTransfer.error.transferFundsError',
-    defaultMessage: '!!!Unable to transfer funds.',
+    defaultMessage: '!!!Error while processing. Check if funds were transfered or try again.',
     description: '"Unable to transfer funds." error message',
   },
   noTransferTxError: {
