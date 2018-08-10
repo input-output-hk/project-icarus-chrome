@@ -102,6 +102,7 @@ export default class SettingsStore extends Store {
   _updateLocale = async ({ locale }: { locale: string }) => {
     await this.setProfileLocaleRequest.execute(locale);
     await this.getProfileLocaleRequest.execute();
+    this.actions.router.goToRoute.trigger({ route: ROUTES.PROFILE.TERMS_OF_USE });
   };
 
   _updateMomentJsLocaleAfterLocaleChange = () => {
@@ -126,8 +127,15 @@ export default class SettingsStore extends Store {
 
   _redirectToTermsOfUseScreenIfTermsNotAccepted = () => {
     if (this.isCurrentLocaleSet &&
-      this.hasLoadedTermsOfUseAcceptance && !this.areTermsOfUseAccepted) {
-      this.actions.router.goToRoute.trigger({ route: ROUTES.PROFILE.TERMS_OF_USE });
+      this.hasLoadedTermsOfUseAcceptance && !this.areTermsOfUseAccepted &&
+      this.stores.router.location.pathname !== ROUTES.ROOT &&
+      this.stores.router.location.pathname !== ROUTES.PROFILE.LANGUAGE_SELECTION
+    ) {
+      if (this.stores.router.location.pathname === ROUTES.WALLETS.ADD) {
+        this.actions.router.goToRoute.trigger({ route: ROUTES.PROFILE.LANGUAGE_SELECTION });
+      } else {
+        this.actions.router.goToRoute.trigger({ route: ROUTES.PROFILE.TERMS_OF_USE });
+      }
     }
   };
 
