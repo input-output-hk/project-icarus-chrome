@@ -1,5 +1,6 @@
-import { When } from 'cucumber';
+import { When, Then } from 'cucumber';
 import { By } from 'selenium-webdriver';
+import i18n from '../support/helpers/i18n-helpers';
 
 When(/^I click the create button$/, async function () {
   await this.click('.createWalletButton');
@@ -9,6 +10,10 @@ When(/^I enter the created wallet password:$/, async function (table) {
   const fields = table.hashes()[0];
   await this.input('.WalletCreateDialog .walletPassword input', fields.password);
   await this.input('.WalletCreateDialog .repeatedPassword input', fields.repeatedPassword);
+});
+
+When(/^I clear the created wallet password ([^"]*)$/, async function (password) {
+  await this.clearInputUpdatingForm('.WalletCreateDialog .walletPassword input', password.length);
 });
 
 When(/^I click the "Create personal wallet" button$/, async function () {
@@ -22,7 +27,11 @@ When(/^I accept the creation terms$/, async function () {
 
 When(/^I copy and enter the displayed mnemonic phrase$/, async function () {
   // Get the displayed mnemonic
-  const mnemonicElement = await this.waitForElement('.WalletRecoveryPhraseMnemonic_component');
+  const mnemonicElement = await this.waitElementTextMatches(
+    /^.*$/,
+    '.WalletRecoveryPhraseMnemonic_component'
+  );
+
   const mnemonic = await mnemonicElement.getText();
   await this.click('.WalletRecoveryPhraseDisplayDialog .primary');
 
@@ -30,9 +39,14 @@ When(/^I copy and enter the displayed mnemonic phrase$/, async function () {
   const recoveryPhrase = mnemonic.split(' ');
   for (let i = 0; i < recoveryPhrase.length; i++) {
     const word = recoveryPhrase[i];
-    await this.clickByXpath(`//button[contains(text(), '${word}')]`);
+    await this.click(`//button[contains(text(), '${word}')]`, By.xpath);
   }
   const checkboxes = await this.driver.findElements(By.css('.SimpleCheckbox_check'));
   checkboxes.forEach((box) => box.click());
   await this.click('.WalletRecoveryPhraseEntryDialog .primary');
+});
+
+Then(/^I should stay in the create wallet dialog$/, async function () {
+  const createMessage = await i18n.formatMessage(this.driver, { id: 'wallet.add.dialog.create.description' });
+  await this.waitUntilText('.Dialog_title', createMessage.toUpperCase(), 2000);
 });

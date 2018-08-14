@@ -13,6 +13,7 @@ export default class SettingsStore extends Store {
   LANGUAGE_OPTIONS = [
     { value: 'en-US', label: globalMessages.languageEnglish },
     { value: 'ja-JP', label: globalMessages.languageJapanese },
+    { value: 'ko-KR', label: globalMessages.languageKorean },
   ];
 
   @observable bigNumberDecimalFormat = {
@@ -117,7 +118,8 @@ export default class SettingsStore extends Store {
   };
 
   _redirectToLanguageSelectionIfNoLocaleSet = () => {
-    if (this.hasLoadedCurrentLocale && !this.isCurrentLocaleSet) {
+    const { isLoading } = this.stores.loading;
+    if (!isLoading && this.hasLoadedCurrentLocale && !this.isCurrentLocaleSet) {
       this.actions.router.goToRoute.trigger({ route: ROUTES.PROFILE.LANGUAGE_SELECTION });
     }
   };

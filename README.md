@@ -1,46 +1,26 @@
-# Icarus light Cardano wallet - PoC
+# Project Icarus - Cardano ADA wallet
   
   We use as template for this repository: [React Chrome Extension Boilerplate](https://github.com/jhen0409/react-chrome-extension-boilerplate)
 
-## Features
-
- - Hot reloading React (Using [Webpack](https://github.com/webpack/webpack) and [React Transform](https://github.com/gaearon/react-transform))
- - Write code with ES2015+ syntax (Using [Babel](https://github.com/babel/babel))
- - E2E tests of Window & Popup & Inject pages (Using [Chrome Driver](https://www.npmjs.com/package/chromedriver), [Selenium Webdriver](https://www.npmjs.com/package/selenium-webdriver))
-
 ## Installation
-
-### Prerequisites
-
-- node v8.9.4 (if you are using nvm, just execute: `$ nvm use`)
-- Install rust tools as mentioned in [js-cardano-wasm](https://github.com/input-output-hk/js-cardano-wasm#installation)
 
 ```bash
 # clone the repository with the submodule js-cardano-wasm
 $ git clone --recursive git@github.com:input-output-hk/icarus-poc.git
-# or
 $ git submodule update --init --recursive
-
-# Install dependencies
-$ npm run build-js-cardano-wasm 
-$ npm install
 ```
 
-In order to update it:
+### Prerequisites
+
+- node v8.9.4 (if you are using nvm, just execute: `$ nvm use`)
+
+- Install rust tools as mentioned in [js-cardano-wasm](https://github.com/input-output-hk/js-cardano-wasm#installation)
+
+### Install dependencies
 
 ```bash
-#### Update js-cardano-wasm
-```cd js-cardano-wasm;
-git checkout master;
-git pull origin master;
-cd ..;
-
-# Commit the update
-git add .
-git commit -S -m "${youCommitMessage}"
-git push ...
-
-# Repeat process from `$npm run build-js-cardano-wasm`
+$ npm run build-js-cardano-wasm 
+$ npm install
 ```
 
 ## Development
@@ -52,6 +32,8 @@ $ npm run build-dll
 # build files to './dev'
 # start webpack development server
 $ npm run dev
+# or
+$ npm run start -- --env "development"
 ```
 * If you're developing Inject page, please allow `https://localhost:3000` connections. (Because `injectpage` injected GitHub (https) pages, so webpack server procotol must be https.)
 * [Load unpacked extensions](https://developer.chrome.com/extensions/getstarted#unpacked) 
@@ -67,23 +49,47 @@ $ npm run dev
   Navigate to the directory in which your extension files live (`./dev` folder), and select it.
 
 
-#### React hot reload
+### Dev Features
 
-This boilerplate uses `Webpack` and `react-transform`. You can hot reload by editing related files of Popup & Window & Inject page.
+ - Hot reloading React (Using [Webpack](https://github.com/webpack/webpack) and [React Transform](https://github.com/gaearon/react-transform))
+ - Write code with ES2015+ syntax (Using [Babel](https://github.com/babel/babel))
+ - E2E tests of Window & Popup & Inject pages (Using [Chrome Driver](https://www.npmjs.com/package/chromedriver), [Selenium Webdriver](https://www.npmjs.com/package/selenium-webdriver))
+
 
 ## Build
 
+Extension can be built for the Cardano testnet:
+
+- Testnet
 ```bash
 # build files to './build'
-$ npm run build
+$ npm run build -- --env "testnet" 
 ```
 
 ## Compress
 
+This tasks allow to generate compressed bundles (zip and crx).
+
+**Note**: The same `--env` flag should be used as for the build.
+
+### Zip
+
+Zip files can be uploaded to the Chrome Web Store
+
 ```bash
 # compress build folder to {manifest.name}.zip and crx
-$ npm run build
-$ npm run compress -- --app-id "APP_ID" --codebase "https://www.sample.com/dw/icarus-extension.crx"
+$ npm run build -- --env "${network}"
+$ npm run compress -- --env "${network}" --zip-only --app-id "APP_ID" --codebase "https://www.sample.com/dw/project-icarus-extension.crx"
+```
+
+### CRX
+
+Crx are compressed and signed chrome extension bundles
+
+```bash
+# compress build folder to {manifest.name}.zip and crx
+$ npm run build -- --env "${network}"
+$ npm run compress -- --env "${network}" --app-id "APP_ID" --codebase "https://www.sample.com/dw/project-icarus-extension.crx" --key ./production-key.pem
 ```
 
 #### Options
@@ -108,6 +114,29 @@ $ npm run flow
 $ npm run eslint
 # features
 $ npm run test-e2e
+```
+
+## Update Cardano crypto library
+
+In order to update it run the following commands:
+
+```bash
+# Update js-cardano-wasm
+cd js-cardano-wasm;
+git checkout master;
+git pull origin master;
+cd ..;
+
+# Commit the update
+git add .
+git commit -S -m "${youCommitMessage}"
+git push ...
+
+# Re-install the module
+$ npm run build-js-cardano-wasm 
+$ npm install
+
+# At this point you can go back to Development steps. 
 ```
 
 ## LICENSE
