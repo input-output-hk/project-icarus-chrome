@@ -1,6 +1,8 @@
 # Project Icarus - Cardano ADA wallet
   
-  We use as template for this repository: [React Chrome Extension Boilerplate](https://github.com/jhen0409/react-chrome-extension-boilerplate)
+[![CircleCI](https://circleci.com/gh/input-output-hk/icarus-poc.svg?style=svg)](https://circleci.com/gh/input-output-hk/icarus-poc)
+
+Icarus, a reference implementation for a lightweight wallet developed by the IOHK Engineering Team. This code base can be used as a point of reference to enable developers to create their own secure light and mobile wallets for Cardano. Icarus is a fully open-source code base that will be the first step in a range of open source initiatives to provide developers with a suite of tools to integrate with Cardano.
 
 ## Installation
 
@@ -58,7 +60,13 @@ $ npm run start -- --env "development"
 
 ## Build
 
-Extension can be built for the Cardano testnet:
+Extension can be built for both the Cardano mainnet and testnet:
+
+- Mainnet
+```bash
+# build files to './build'
+$ npm run build -- --env "mainnet" 
+```
 
 - Testnet
 ```bash
@@ -79,7 +87,7 @@ Zip files can be uploaded to the Chrome Web Store
 ```bash
 # compress build folder to {manifest.name}.zip and crx
 $ npm run build -- --env "${network}"
-$ npm run compress -- --env "${network}" --zip-only --app-id "APP_ID" --codebase "https://www.sample.com/dw/project-icarus-extension.crx"
+$ npm run compress -- --env "${network}" --zip-only --app-id "APP_ID" --codebase "https://www.sample.com/dw/yoroi-extension.crx"
 ```
 
 ### CRX
@@ -89,7 +97,7 @@ Crx are compressed and signed chrome extension bundles
 ```bash
 # compress build folder to {manifest.name}.zip and crx
 $ npm run build -- --env "${network}"
-$ npm run compress -- --env "${network}" --app-id "APP_ID" --codebase "https://www.sample.com/dw/project-icarus-extension.crx" --key ./production-key.pem
+$ npm run compress -- --env "${network}" --app-id "APP_ID" --codebase "https://www.sample.com/dw/yoroi-extension.crx" --key ./production-key.pem
 ```
 
 #### Options
@@ -141,4 +149,6 @@ $ npm install
 
 ## LICENSE
 
-[MIT](LICENSE)
+We used as template for this repository: [React Chrome Extension Boilerplate](https://github.com/jhen0409/react-chrome-extension-boilerplate)
+
+This project is Copyright 2018 IOHK and licensed under the [MIT](LICENSE.md)
