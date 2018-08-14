@@ -29,7 +29,7 @@ import type {
 } from './index';
 import {
   getUTXOsSumsForAddresses
-} from './lib/yoroi-backend-api';
+} from './lib/project-icarus-backend-api';
 import { UpdateAdaWalletError, GetBalanceError } from './errors';
 import { saveAdaWallet, getAdaWallet, getWalletMasterKey } from './adaLocalStorage';
 import type { ConfigType } from '../../../config/config-types';

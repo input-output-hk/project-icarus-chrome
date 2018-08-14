@@ -1,4 +1,4 @@
-# Yoroi - Cardano ADA wallet
+# Project Icarus - Cardano ADA wallet
   
   We use as template for this repository: [React Chrome Extension Boilerplate](https://github.com/jhen0409/react-chrome-extension-boilerplate)
 
@@ -85,7 +85,7 @@ Zip files can be uploaded to the Chrome Web Store
 ```bash
 # compress build folder to {manifest.name}.zip and crx
 $ npm run build -- --env "${network}"
-$ npm run compress -- --env "${network}" --zip-only --app-id "APP_ID" --codebase "https://www.sample.com/dw/yoroi-extension.crx"
+$ npm run compress -- --env "${network}" --zip-only --app-id "APP_ID" --codebase "https://www.sample.com/dw/project-icarus-extension.crx"
 ```
 
 ### CRX
@@ -95,7 +95,7 @@ Crx are compressed and signed chrome extension bundles
 ```bash
 # compress build folder to {manifest.name}.zip and crx
 $ npm run build -- --env "${network}"
-$ npm run compress -- --env "${network}" --app-id "APP_ID" --codebase "https://www.sample.com/dw/yoroi-extension.crx" --key ./production-key.pem
+$ npm run compress -- --env "${network}" --app-id "APP_ID" --codebase "https://www.sample.com/dw/project-icarus-extension.crx" --key ./production-key.pem
 ```
 
 #### Options

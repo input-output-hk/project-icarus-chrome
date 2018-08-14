@@ -8,7 +8,7 @@ import {
 } from '../../../utils/logging';
 import {
   getTransactionsHistoryForAddresses
-} from '../lib/yoroi-backend-api';
+} from '../lib/project-icarus-backend-api';
 import {
   saveTxs,
   getMostRecentTx,

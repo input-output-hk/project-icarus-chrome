@@ -1092,8 +1092,8 @@
         }
       },
       {
-        "defaultMessage": "!!!https://daedaluswallet.io/faq/",
-        "description": "URL for the \"FAQ on Yoroi website\". link in the testnet banner",
+        "defaultMessage": "!!!https://github.com/input-output-hk/icarus-poc/wiki",
+        "description": "URL for the \"FAQ on Project Icarus website\". link in the testnet banner",
         "end": {
           "column": 3,
           "line": 27
@@ -1210,53 +1210,6 @@
       }
     ],
     "path": "app/components/loading/Loading.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "!!!Unable to sync - incorrect time",
-        "description": "Title of Sync error overlay",
-        "end": {
-          "column": 3,
-          "line": 17
-        },
-        "file": "app/components/loading/SystemTimeErrorOverlay.js",
-        "id": "systemTime.error.overlayTitle",
-        "start": {
-          "column": 16,
-          "line": 13
-        }
-      },
-      {
-        "defaultMessage": "!!!Attention, Daedalus is unable to sync with the blockchain because the time on your machine is different from the global time. You are 2 hours 12 minutes 54 seconds behind.<br>To synchronize the time and fix this issue, please visit the FAQ section of Daedalus website:",
-        "description": "Text of Sync error overlay",
-        "end": {
-          "column": 3,
-          "line": 22
-        },
-        "file": "app/components/loading/SystemTimeErrorOverlay.js",
-        "id": "systemTime.error.overlayText",
-        "start": {
-          "column": 15,
-          "line": 18
-        }
-      },
-      {
-        "defaultMessage": "!!!daedaluswallet.io/faq",
-        "description": "Link to Daedalus website FAQ page",
-        "end": {
-          "column": 3,
-          "line": 27
-        },
-        "file": "app/components/loading/SystemTimeErrorOverlay.js",
-        "id": "systemTime.error.problemSolutionLink",
-        "start": {
-          "column": 23,
-          "line": 23
-        }
-      }
-    ],
-    "path": "app/components/loading/SystemTimeErrorOverlay.json"
   },
   {
     "descriptors": [
@@ -1402,7 +1355,7 @@
         }
       },
       {
-        "defaultMessage": "!!!https://daedaluswallet.io/faq/",
+        "defaultMessage": "!!!https://github.com/input-output-hk/icarus-poc/wiki",
         "description": "URL for the \"FAQ on Daedalus website\" link in the FAQ section on the support settings page",
         "end": {
           "column": 3,

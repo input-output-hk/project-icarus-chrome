@@ -1,5 +1,5 @@
 export const THEMES = {
-  YOROI: 'yoroi',
+  PROJECT_ICARUS: 'project-icarus',
   CARDANO: 'cardano',
   DARK_BLUE: 'dark-blue',
   LIGHT_BLUE: 'light-blue',

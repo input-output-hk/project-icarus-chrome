@@ -8,7 +8,7 @@ Feature: Transfer Daedalus Wallet funds
   Scenario: I follow setup instructions
     Given There is no wallet stored
     And I am on the Daedalus Transfer instructions screen
-    When I click on the create Yoroi wallet button
+    When I click on the create Project Icarus wallet button
     Then I should see the Create wallet screen
 
   Scenario: I have access to a working copy of my Daedalus wallet
@@ -17,7 +17,7 @@ Feature: Transfer Daedalus Wallet funds
     When I click on the go to the Receive screen button
     Then I should see the Receive screen
 
-  Scenario: Transfer fail when I try to transfer funds from an Yoroi wallet
+  Scenario: Transfer fail when I try to transfer funds from an Project Icarus wallet
     Given There is a wallet stored named Test
     And I am on the Daedalus Transfer instructions screen
     When I click on the transfer funds from Daedalus button

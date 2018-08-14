@@ -14,7 +14,7 @@ function CustomWorld() {
       }
     })
     .forBrowser('chrome')
-    .setChromeOptions(new chrome.Options().addExtensions(path.resolve(__dirname, '../../yoroi-test.crx')))
+    .setChromeOptions(new chrome.Options().addExtensions(path.resolve(__dirname, '../../project-icarus-test.crx')))
     .build();
 
   this.getElementBy = (locator, method = By.css) => this.driver.findElement(method(locator));
@@ -104,17 +104,17 @@ function CustomWorld() {
 
   this.intl = (key, lang = 'en-US') =>
     this.driver.executeScript((k, l) =>
-        window.yoroi.translations[l][k]
+        window.projecticarus.translations[l][k]
     , key, lang);
 
   this.saveAddressesToDB = addresses =>
     this.driver.executeScript(addrs => {
-      addrs.forEach(addr => window.yoroi.api.ada.saveAddress(addr, 'External'));
+      addrs.forEach(addr => window.projecticarus.api.ada.saveAddress(addr, 'External'));
     }, addresses);
 
   this.saveTxsToDB = transactions => {
     this.driver.executeScript(txs => {
-      window.yoroi.api.ada.saveTxs(txs);
+      window.projecticarus.api.ada.saveTxs(txs);
     }, transactions);
   };
 }

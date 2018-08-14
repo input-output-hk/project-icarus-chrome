@@ -10,7 +10,7 @@ import Request from '.././lib/LocalizedRequest';
 import type { ConfigType } from '../../../config/config-types';
 import {
   sendTx
-} from '../../api/ada/lib/yoroi-backend-api';
+} from '../../api/ada/lib/project-icarus-backend-api';
 import LocalizableError, {
   localizedError
 } from '../../i18n/LocalizableError';
