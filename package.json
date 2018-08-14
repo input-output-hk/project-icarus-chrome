@@ -1,5 +1,5 @@
 {
-  "name": "yoroi",
+  "name": "project-icarus",
   "version": "0.0.1",
   "description": "Cardano ADA wallet",
   "scripts": {
@@ -7,7 +7,7 @@
     "dev": "node scripts/start --env 'development'",
     "build": "node scripts/build",
     "compress": "node scripts/compress",
-    "compress-e2e-tests": "npm run compress -- --env 'test' --app-id 'yoroi' --codebase 'https://www.iohk.io/dw/yoroi-extension.crx' --key ./e2etest-key.pem",
+    "compress-e2e-tests": "npm run compress -- --env 'test' --app-id 'project-icarus' --codebase 'https://www.iohk.io/dw/project-icarus-extension.crx' --key ./e2etest-key.pem",
     "compress-keygen": "crx keygen",
     "clean": "rimraf build/ dev/ *.zip *.crx dll/",
     "flow": "flow .",

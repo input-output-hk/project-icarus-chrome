@@ -48,14 +48,11 @@ $adaLogoWidth: 43px;
   margin-top: 7px; // aligning the icon visually in the middle
 }
 
-.yoroiLogo {
+.projectIcarusLogo {
   & > svg {
     display: block;
-    width: 100px;
+    width: 173px;
     margin: 0 114px;
-    & > path {
-      fill: #daa49a;
-    }
   }
 }
 

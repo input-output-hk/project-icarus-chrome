@@ -13,6 +13,6 @@ export const waitUntilUrlEquals = function (expectedUrl) {
 
 export const navigateTo = function (requestedRoute) {
   return this.driver.executeScript((route) => {
-    window.yoroi.actions.router.goToRoute.trigger({ route });
+    window.projecticarus.actions.router.goToRoute.trigger({ route });
   }, requestedRoute);
 };

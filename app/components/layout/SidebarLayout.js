@@ -23,8 +23,8 @@ export const messages = defineMessages({
   },
   faqLinkUrl: {
     id: 'settings.support.faq.faqLinkURL',
-    defaultMessage: '!!!https://daedaluswallet.io/faq/',
-    description: 'URL for the "FAQ on Yoroi website". link in the testnet banner',
+    defaultMessage: '!!!https://github.com/input-output-hk/icarus-poc/wiki',
+    description: 'URL for the "FAQ on Project Icarus website". link in the testnet banner',
   },
 });
 

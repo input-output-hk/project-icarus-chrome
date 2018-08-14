@@ -1,11 +1,11 @@
 {
   "version": "0.0.12",
   "version_name": "tn-0.0.12#68.0_GC-w7",
-  "name": "yoroi",
+  "name": "project-icarus",
   "manifest_version": 2,
   "description": "[testnet] Cardano ADA wallet",
   "browser_action": {
-    "default_title": "[testnet] Yoroi"
+    "default_title": "[testnet] Project Icarus"
   },
   "icons": {
     "16": "img/icon-16.png",
