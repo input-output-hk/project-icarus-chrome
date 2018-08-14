@@ -60,13 +60,7 @@ $ npm run start -- --env "development"
 
 ## Build
 
-Extension can be built for both the Cardano mainnet and testnet:
-
-- Mainnet
-```bash
-# build files to './build'
-$ npm run build -- --env "mainnet" 
-```
+Extension can be built for both the Cardano testnet:
 
 - Testnet
 ```bash
