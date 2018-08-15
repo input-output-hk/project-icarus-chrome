@@ -145,4 +145,4 @@ $ npm install
 
 We used as template for this repository: [React Chrome Extension Boilerplate](https://github.com/jhen0409/react-chrome-extension-boilerplate)
 
-This project is Copyright 2018 IOHK and licensed under the [MIT](LICENSE.md)
+This project is Copyright (c) 2018 IOHK Ltd. and licensed under the [MIT](LICENSE.md)
