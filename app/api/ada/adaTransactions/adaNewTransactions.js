@@ -61,7 +61,7 @@ export function getAdaTransactionFee(
     })
     .catch(err => {
       Logger.error('adaNetTransactions::getAdaTransactionFee error: ' + stringifyError(err));
-      const notEnoughFunds = err.message === 'NotEnoughInput';
+      const notEnoughFunds = ['NotEnoughInput', 'NoInputs'].includes(err.message);
       if (notEnoughFunds) throw new NotEnoughMoneyToSendError();
       throw new TransactionError(err.message);
     });
