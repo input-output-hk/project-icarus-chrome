@@ -11,13 +11,15 @@ Feature: Transfer Daedalus Wallet funds
     When I click on the create Project Icarus wallet button
     Then I should see the Create wallet screen
 
-  Scenario: I have access to a working copy of my Daedalus wallet
+  @it-33
+  Scenario: "Transfer funds from Daedalus" buttons test (IT-33)
     Given There is a wallet stored named Test
     And I am on the Daedalus Transfer instructions screen
     When I click on the go to the Receive screen button
     Then I should see the Receive screen
 
-  Scenario: Transfer fail when I try to transfer funds from an Project Icarus wallet
+  @it-99
+  Scenario: Daedalus transfer fails when user tries to transfer funds from an invalid Icarus wallet (IT-99)
     Given There is a wallet stored named Test
     And I am on the Daedalus Transfer instructions screen
     When I click on the transfer funds from Daedalus button
@@ -27,7 +29,8 @@ Feature: Transfer Daedalus Wallet funds
     And I proceed with the recovery
     Then I should see an "Invalid recovery phrase" error message
   
-  Scenario: Try to transfer funds from my Daedalus wallet but connection is lost
+  @it-84
+  Scenario: Daedalus transfer should fail to recover wallet if connection was lost (IT-84)
     Given There is a wallet stored named Test
     And I am on the Daedalus Transfer instructions screen
     When I click on the transfer funds from Daedalus button
@@ -38,8 +41,8 @@ Feature: Transfer Daedalus Wallet funds
     Then I should see an Error screen
     And I should see 'Connection lost' error message
   
-  @withWebSocketConnection
-  Scenario: I transfer funds from my Daedalus wallet
+  @withWebSocketConnection @it-45
+  Scenario: User can transfer Daedalus funds to Icarus using 12-word mnemonic phrase (IT-45)
     Given There is a wallet stored named Test
     And My Daedalus wallet has funds
     And I am on the Daedalus Transfer instructions screen
@@ -55,8 +58,8 @@ Feature: Transfer Daedalus Wallet funds
     When I confirm Daedalus transfer funds
     Then I should see the summary screen
     
-  @withWebSocketConnection
-  Scenario: Try to transfer funds from my Daedalus wallet but it doesn't have funds
+  @withWebSocketConnection @it-80
+  Scenario: Daedalus transfer should fail if the 12-words mnemonics corresponds to an empty Daedalus wallet (IT-80)
     Given There is a wallet stored named Test
     And My Daedalus wallet hasn't funds
     And I am on the Daedalus Transfer instructions screen

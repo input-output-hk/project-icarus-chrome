@@ -12,7 +12,8 @@ Feature: Generate Addresses
     | address                                                     |
     | Ae2tdPwUPEYvr4nYAWxbYB8P5vw1BXYKpit7eEWYwzn5zG59bPtjWSmPYWt |
 
-  Scenario: Generate a new receive address
+  @it-17
+  Scenario: Generate a new receive address (IT-17)
     When I click on the Generate new address button
     Then I should see my latest address "Ae2tdPwUPEZ6ydLWv4VPC1v7wuXeeWMFbDjTb3oHE2EuVojvoR7Vs1oQwDB" at the top
     And I should see the addresses exactly list them
@@ -20,12 +21,14 @@ Feature: Generate Addresses
     | Ae2tdPwUPEZ6ydLWv4VPC1v7wuXeeWMFbDjTb3oHE2EuVojvoR7Vs1oQwDB |
     | Ae2tdPwUPEYvr4nYAWxbYB8P5vw1BXYKpit7eEWYwzn5zG59bPtjWSmPYWt |
 
-  Scenario: Don't allow more than 20 unused address generation
+  @it-49
+  Scenario: User can't create more than 20 consecutive unused addresses (IT-49)
     When I click on the Generate new address button 20 times
     And  I click on the Generate new address button
     Then I should see an error about max unused addresses
 
-  Scenario: Hide used addresses
+  @it-22
+  Scenario: Ensure user can hide used Addresses under "Receive tab" (IT-22)
     When I click on the Generate new address button
     And I click on the Hide used addresses button
     Then I should see the addresses exactly list them
