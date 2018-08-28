@@ -6,7 +6,8 @@ Feature: Restore Wallet
     And I am testing "Restore wallet"
     And There is no wallet stored
 
-  Scenario: Successfully restoring an empty wallet
+  @it-6
+  Scenario: Restoring an empty wallet (IT-6)
     When I click the restore button
     And I enter the name "Restored Wallet"
     And I enter the recovery phrase:
@@ -76,20 +77,9 @@ Feature: Restore Wallet
     | address                                                     |
     | Ae2tdPwUPEZLzYQaqFk1U9VWBeY9AfQ2hKBWZjxtfwWVE46sy6u5ZZAeFu1 |
 
-  Scenario: Fail to restore a Daedalus wallet
-    When I click the restore button
-    And I enter the name "Restored Wallet"
-    And I enter the recovery phrase:
-    | recoveryPhrase                                                                 |
-    | forum salon region tent laugh agree spirit share damage observe captain suffer |
-    And I enter the restored wallet password:
-    | password   | repeatedPassword |
-    | Secret_123 | Secret_123       |
-    And I click the "Restore Wallet" button
-    Then I should see an "Invalid recovery phrase" error message
-
-  Scenario: Fail to restore due to incomplete fields
-    When I click the restore button
+    @it-26
+    Scenario: Wallet can't be restored without entering password (IT-26)
+    And I click the restore button
     And I enter the name "Restored Wallet"
     And I enter the recovery phrase:
     | recoveryPhrase                                                                                           |
@@ -97,8 +87,6 @@ Feature: Restore Wallet
     And I enter the restored wallet password:
     | password   | repeatedPassword |
     | Secret_123 | Secret_123       |
-    And I clear the name "Restored Wallet"
-    And I clear the recovery phrase
     And I clear the restored wallet password Secret_123
     And I click the "Restore Wallet" button
     Then I should stay in the restore wallet dialog
