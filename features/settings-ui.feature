@@ -66,7 +66,7 @@ Feature: Wallet UI Settings
 
   
   @it-8
-  Scenario: Wallet renaming (IT-8)
+  Scenario Outline: Wallet renaming (IT-8)
     When I am testing "Wallet Settings Screen"
     And There is a wallet stored named Test
     And I navigate to the general settings screen
@@ -74,10 +74,16 @@ Feature: Wallet UI Settings
     And I click on "name" input field
     And I enter new wallet name:
     | name         |
-    | first Edited |
+    | <walletName> |
     And I click outside "name" input field
     And I navigate to wallet transactions screen
-    Then I should see new wallet name "first Edited"
+    Then I should see new wallet name "<walletName>"
+    Examples:
+    | walletName    |
+    | first Edited  | 
+    |ウォレットの追加  |
+    |지갑 추가      |
+    |НАСТРОЙКИ      | 
 
   @it-14
   Scenario: User can't change the password without entering old password (IT-14)
