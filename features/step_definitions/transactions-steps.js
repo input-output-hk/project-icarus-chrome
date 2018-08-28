@@ -43,11 +43,11 @@ When(/^I fill the form:$/, async function (table) {
 });
 
 When(/^I clear the receiver$/, async function () {
-  await this.clearInput('#receiver--2');
+  await this.clearInput("input[name='receiver']");
 });
 
 When(/^I fill the receiver as "([^"]*)"$/, async function (receiver) {
-  await this.input('#receiver--2', receiver);
+  await this.input("input[name='receiver']", receiver);
 });
 
 When(/^The transaction fees are "([^"]*)"$/, async function (fee) {

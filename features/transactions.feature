@@ -84,4 +84,9 @@ Feature: Send transaction
       | Ae2tdPwUPEZ3HUU7bmfexrUzoZpAZxuyt4b4bn7fus7RHfXoXRightdgMCv | 0.001000 |
     And I clear the receiver
     And I fill the receiver as "Invalid address"
-    And I should not be able to submit
+    Then I should not be able to submit
+    When I clear the receiver
+    And I fill the form:
+      | address                                                     | amount   |
+      | Ae2tdPwUPEZ3HUU7bmfexrUzoZpAZxuyt4b4bn7fus7RHfXoXRightdXXXX | 0.001000 |
+    Then I should not be able to submit  
