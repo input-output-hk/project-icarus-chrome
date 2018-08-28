@@ -20,10 +20,11 @@ Feature: Wallet UI Settings
     | message                             |
     | global.errors.invalidWalletPassword |
 
-  @it-94
-  Scenario: User is able to change spending password (IT-94)
-    When I am testing "Wallet Settings Screen"
+@it-94
+  Scenario Outline: User is able to change spending password (IT-94)
+    When I am testing "Send transaction"
     And There is a wallet stored named Test
+    And I have a wallet with funds
     And I navigate to the general settings screen
     And I click on secondary menu "wallet" item
     And I click on the "change" password label
@@ -33,6 +34,24 @@ Feature: Wallet UI Settings
     | Secret_123         | newSecret123 | newSecret123     |
     And I submit the wallet password dialog
     Then I should not see the change password dialog anymore
+
+    When I navigate to wallet transactions screen
+    And I go to the send transaction screen
+    And I fill the form:
+      | address                                                     | amount   |
+      | Ae2tdPwUPEZ3HUU7bmfexrUzoZpAZxuyt4b4bn7fus7RHfXoXRightdgMCv | <amount> |
+    And The transaction fees are "<fee>"
+    And I click on the next button in the wallet send form
+    And I see send money confirmation dialog
+    And I enter the wallet password:
+      | password   |
+      | newSecret123 |
+    And I submit the wallet send form
+    Then I should see the summary screen
+
+        Examples:
+      | amount              | fee       | |
+      | 0.001000            | 0.167950  | # Sent tx to a valid adress|
   
   @it-91
   Scenario: Password should be case-sensitive [Wallet password changing] (IT-91)
