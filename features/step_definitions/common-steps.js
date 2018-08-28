@@ -48,6 +48,10 @@ Given(/^There is a wallet stored named (.*)$/, async function (walletName) {
   await this.waitUntilText('.TopBar_walletName', walletName.toUpperCase());
 });
 
+Given(/^I refresh the page$/, async function () {
+  await this.driver.navigate().refresh();
+});
+
 function refreshWallet(client) {
   return client.driver.executeAsyncScript((done) => {
     window.projecticarus.stores.ada.wallets.refreshWalletsData().then(done).catch(err => done(err));

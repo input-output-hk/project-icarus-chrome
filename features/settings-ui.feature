@@ -127,6 +127,8 @@ Feature: Wallet UI Settings
     And I open General Settings language selection dropdown
     And I select Japanese language
     Then I should see Japanese language as selected
+    When I refresh the page
+    Then I should see Japanese language as selected
 
   @it-23
   Scenario: Wallet settings tab isn't active if wallet is not created (IT-23)
