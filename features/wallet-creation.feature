@@ -29,7 +29,7 @@ Feature: Wallet creation
     Then I should stay in the create wallet dialog
 
   @it-16
-  Scenario: Wallet can't be created if wallet name doesn't meet requirements (IT-16)
+  Scenario Outline: Wallet can't be created if wallet name doesn't meet requirements (IT-16) test
     When I click the create button
     And I enter the name "Created Wallet"
     And I enter the created wallet password:
@@ -38,3 +38,14 @@ Feature: Wallet creation
     And I clear the name "Created Wallet"
     And I click the "Create personal wallet" button
     Then I should stay in the create wallet dialog
+
+    And I enter the name "<invalidWalletName>"
+    And I click the "Create personal wallet" button
+    Then I should stay in the create wallet dialog
+    And I should see "Wallet name requires at least 3 and at most 40 letters." error message on Wallet creation pop up
+
+
+    Examples:
+    | invalidWalletName                        | 
+    | ab                                       |
+    | qwertyuiopasdfghjklzxcvbnmzxcvbnmlkjhgfds|
