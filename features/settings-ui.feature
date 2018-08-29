@@ -13,12 +13,18 @@ Feature: Wallet UI Settings
     And I click on the "change" password label
     And I should see the "change" wallet password dialog
     And I change wallet password:
-    | currentPassword    | password | repeatedPassword |
-    | Secret_123         | secret   | secret           |
+    | currentPassword    | password     | repeatedPassword   |
+    | <currentPassword>  | <password>   | <repeatedPassword> |
     And I submit the wallet password dialog
     Then I should see the following error messages:
     | message                             |
     | global.errors.invalidWalletPassword |
+  Examples:
+  | currentPassword | password    | repeatedPassword |
+  | Secret_123      | secret      | secret           |  
+  | Secret_123      | secret123   | secret123        |  
+  | Secret_123      | secretSecReT| secretSecReT     | 
+  | Secret_123      | SECRET1234T | SECRET1234T      | 
 
 @it-94
   Scenario Outline: User is able to change spending password (IT-94)
