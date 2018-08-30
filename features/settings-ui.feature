@@ -60,7 +60,7 @@ Feature: Wallet UI Settings
       | 0.001000            | 0.167950  | # Sent tx to a valid adress|
   
   @it-91
-  Scenario: Password should be case-sensitive [Wallet password changing] (IT-91)
+  Scenario Outline: Password should be case-sensitive [Wallet password changing] (IT-91)
     When I am testing "Wallet Settings Screen"
     And There is a wallet stored named Test
     And I navigate to the general settings screen
@@ -68,12 +68,17 @@ Feature: Wallet UI Settings
     And I click on the "change" password label
     And I should see the "change" wallet password dialog
     And I change wallet password:
-    | currentPassword    | password     | repeatedPassword |
-    | InvalidPrevious123 | newSecret123 | newSecret123     |
+    | currentPassword    | password  | repeatedPassword      |
+    | <currentPassword>  | <password>| <repeatedPassword>    |
     And I submit the wallet password dialog
     Then I should see the following submit error messages:
     | message                           |
     | api.errors.IncorrectPasswordError |
+  Examples:
+  | currentPassword | password         |repeatedPassword |
+  | SecretT12345    | ValidPassword123 |ValidPassword123 |
+  | secret123       | ValidPassword123 |ValidPassword123 |
+  | SECRET_123      | ValidPassword123 |ValidPassword123 |
 
 #@it-91
 #  Scenario: User tries to change the password omitting special characters in their current password
