@@ -1,4 +1,4 @@
-# Project Icarus - Cardano ADA wallet
+# Project Icarus - Cardano ADA wallet (Testing CI config for Fork PR)
   
 [![CircleCI](https://circleci.com/gh/input-output-hk/icarus-poc.svg?style=svg)](https://circleci.com/gh/input-output-hk/icarus-poc)
 
